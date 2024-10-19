@@ -1,7 +1,9 @@
+import CategoryItem from "@/components/categories/CategoryItem";
+import CategoryList from "@/components/categories/CategoryList";
 import { useGetParentCategories } from "@/hooks/api/categoreis/useGetParentCategories";
-import { useQueryClient } from "@tanstack/react-query";
+import { ParentCategoryItem } from "@/types/categories";
 import React from "react";
-import { View } from "react-native";
+import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 
 const CategoriesList = () => {
@@ -11,17 +13,71 @@ const CategoriesList = () => {
 
   //   console.log("data in component", data);
 
+  const categoriesList = data?.data.data || [];
+
+  if (isLoading) {
+    return;
+  }
+
+  console.log(categoriesList);
+
+  const renderCategory = (category: ParentCategoryItem) => (
+    <CategoryItem key={category.id} item={category} />
+  );
+
+  const renderItem: ListRenderItem<ParentCategoryItem> | null | undefined = ({
+    item,
+  }) => (
+    <CategoryItem key={item.id} item={item} containerStyles={{ flex: 1 }} />
+  );
+
   return (
     <View>
-      <Text
-        style={{
-          color: "red",
+      {/* <CategoryList categories={categoriesList} renderItem={renderCategory} /> */}
+      <FlatList
+        data={[...categoriesList, ...categoriesList, ...categoriesList]}
+        renderItem={renderItem}
+        style={{}}
+        columnWrapperStyle={{
+          //   justifyContent: "space-between",
+          gap: 10,
+          paddingHorizontal: 20,
+          marginBottom: 15,
         }}
-      >
-        aslkdj
-      </Text>
+        numColumns={2}
+      ></FlatList>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  container: {
+    paddingHorizontal: 20,
+    flex: 1,
+    zIndex: 1,
+  },
+  emptyHeader: {
+    fontSize: 30,
+    textTransform: "uppercase",
+    fontWeight: "bold",
+    opacity: 0.2,
+  },
+  emptyHeaderContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: -1,
+  },
+  addBtn: {
+    position: "absolute",
+    right: 15,
+    bottom: 50,
+    zIndex: 1,
+  },
+});
 
 export default CategoriesList;

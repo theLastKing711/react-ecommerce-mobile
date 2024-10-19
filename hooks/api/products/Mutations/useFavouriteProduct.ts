@@ -3,34 +3,41 @@
 // and the first render on the client. Typically, web developers will use CSS media queries
 // to render different styles on the client and server, these aren't directly supported in React Native
 
-import { CATEGORY_URI, USER_URI } from "@/constants";
+import { queryClient } from "@/app/_layout";
+import { CATEGORY_URI, HOME_URI, PRODUCT_URI, USER_URI } from "@/constants";
 import { apiClient } from "@/libs/axios/config";
 import { CursorPaginatedParentCategorisList } from "@/types/categories";
-import { useQuery } from "@tanstack/react-query";
+import { IHomeCategoryList, IHomeResponse } from "@/types/home";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
+
 
 // but can be achieved using a styling library like Nativewind.
-export function useGetParentCategories() {
+export function useFavouriteProduct() {
     
-    const info = useQuery({queryKey: ['categories'], queryFn: getCategoriesApi})
+    const mutation  = useMutation({
+        mutationFn: favouriteProductApi,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey: ['home']})
+        }
+      });
     
-
-
     return {
-        data: info.data,
-        isLoading: info.isLoading,
+        mutation: mutation.mutate,
+        test: mutation.isSuccess
     }
     
 }
   
-async function getCategoriesApi() {
+async function favouriteProductApi(id: number) {
     try {
 
-        const parent_categories_url = `${CATEGORY_URI}/parent-list`;  
+        const favourite_product_url = `${PRODUCT_URI}/favourite/${id}`;  
+        
         
         const response = await apiClient
-                                .get<CursorPaginatedParentCategorisList>
-                                (parent_categories_url);
-
+                                .post<{id: number}>
+                                (favourite_product_url);
 
         return {
             data: response.data,

@@ -3,3 +3,8 @@ export type CursorPaginatedResult<T> = {
     next_cursur: string;
     per_page: number;
 }
+
+
+export type PaginatedResult<T> = {
+    data: T[];
+}

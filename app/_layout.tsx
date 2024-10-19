@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import { PaperProvider } from "react-native-paper";
 import { View } from "react-native-reanimated/lib/typescript/Animated";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 2 } },
 });
 

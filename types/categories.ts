@@ -7,4 +7,5 @@ export type ParentCategoryItem = {
     id: number;
     parent_id?: number;
     name: string
+    image_url: string;
 }
