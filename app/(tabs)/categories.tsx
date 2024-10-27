@@ -1,10 +1,8 @@
 import CategoryItem from "@/components/categories/CategoryItem";
-import CategoryList from "@/components/categories/CategoryList";
-import { useGetParentCategories } from "@/hooks/api/categoreis/useGetParentCategories";
+import { useGetParentCategories } from "@/hooks/api/categoreis/Queries/useGetParentCategories";
 import { ParentCategoryItem } from "@/types/categories";
 import React from "react";
 import { FlatList, ListRenderItem, StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
 
 const CategoriesList = () => {
   //   const queryClient = useQueryClient();

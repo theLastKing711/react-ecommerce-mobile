@@ -1,8 +1,8 @@
 import { IHomeProductItem } from "@/types/home";
 import React from "react";
-import { Card, IconButton, Text } from "react-native-paper";
+import { Card, IconButton, Text, Tooltip } from "react-native-paper";
 
-export type ProductCardProps = {
+export type ProductCardProps<T extends IHomeProductItem = IHomeProductItem> = {
   item: IHomeProductItem;
   onFavourite: (id: number) => void;
 };
@@ -21,11 +21,15 @@ const ProductCard = ({
         <Text>{price}$</Text>
       </Card.Content>
       <Card.Actions style={{ flexDirection: "row-reverse" }}>
-        <IconButton icon={{ source: "cart-outline", direction: "rtl" }} />
-        <IconButton
-          icon={{ source: heartIcon, direction: "rtl" }}
-          onPress={(e) => onFavourite(id)}
-        />
+        <Tooltip title="أضف إلى عربة التسوق">
+          <IconButton icon={{ source: "cart-outline", direction: "rtl" }} />
+        </Tooltip>
+        <Tooltip title="أضف إلى قائمة المفضلة">
+          <IconButton
+            icon={{ source: heartIcon, direction: "rtl" }}
+            onPress={(e) => onFavourite(id)}
+          />
+        </Tooltip>
       </Card.Actions>
     </Card>
   );

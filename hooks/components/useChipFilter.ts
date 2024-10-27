@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { useTheme } from 'react-native-paper';
 
-export function useChipFilter(ids: number[]) {
+export function useChipFilter(ids: number[] = []) {
     const theme = useTheme();
 
     const [selectedItems, setSelectedItems] = useState<number[]>(ids);

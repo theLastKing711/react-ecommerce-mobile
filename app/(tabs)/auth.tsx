@@ -5,6 +5,7 @@ import React from "react";
 import { Controller, Form, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
+import AboutScreen from "./about";
 const Auth = () => {
   const theme = useTheme();
 

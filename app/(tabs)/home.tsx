@@ -1,15 +1,30 @@
 import CategoryFilterSection from "@/components/home/CategoryFilterSection";
 import ProductSection from "@/components/home/ProductSection";
+import SearchSuggestionList from "@/components/home/SearchSuggestionList";
 import ProductCard from "@/components/shared/ProductCard";
-import { useGetHomeData } from "@/hooks/api/home/useGetHomeData";
+import { useGetHomeData } from "@/hooks/api/home/Queries/useGetHomeData";
 import { useFavouriteProduct } from "@/hooks/api/products/Mutations/useFavouriteProduct";
+import { useGetSearchSuggestions } from "@/hooks/api/home/Queries/useGetSearchSuggestions";
 import { useChipFilter } from "@/hooks/components/useChipFilter";
 import { IHomeCategoryItem, IHomeProductItem } from "@/types/home";
 import { ListRenderItem, ScrollView, StyleSheet, View } from "react-native";
-import { Chip, ThemeProvider, useTheme } from "react-native-paper";
+import { Chip, useTheme } from "react-native-paper";
 import { Searchbar } from "react-native-paper";
 
 const Home = () => {
+  const {
+    searchQueryParam,
+    nextCursorParam,
+    data: searchSuggestionData,
+    isSearchFocused,
+    hasNextPage,
+    isLoading: isSearchSuggestionListLoading,
+    onSearchFocus,
+    onSearchBlur,
+    onSearchValueUpdate,
+    fetchNextPage,
+  } = useGetSearchSuggestions();
+
   const { data, isLoading } = useGetHomeData();
 
   const { mutation: favouriteProduct } = useFavouriteProduct();
@@ -17,12 +32,14 @@ const Home = () => {
   const theme = useTheme();
 
   const { getBackgroundColor, getColor, isItemSelected, toggleItem } =
-    useChipFilter([]);
+    useChipFilter();
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
+      //   height: 600,
       backgroundColor: theme.colors.surface,
+      position: "relative",
     },
     categoryListConatiner: {
       alignItems: "flex-start",
@@ -31,11 +48,16 @@ const Home = () => {
     },
   });
 
+  const searchSuggestions =
+    searchSuggestionData?.pages?.flatMap((item) => item.data) || [];
+
   const categoriesList = data?.data.categories || [];
 
   const mostSellingProducts = data?.data.most_selling_products || [];
 
   const userPurchasedProducts = data?.data.user_purchased_products || [];
+
+  console.log("search suggestions", searchSuggestions);
 
   const renderCategoryItem:
     | ListRenderItem<IHomeCategoryItem>
@@ -65,35 +87,57 @@ const Home = () => {
     return;
   }
 
+  const shouldShowSuggestionList = isSearchFocused || !!searchQueryParam;
+
   return (
+    // <ScrollView style={{ position: "relative" }}>
     <View style={styles.container}>
-      <ScrollView>
+      <View style={{ zIndex: 4 }}>
         <Searchbar
-          placeholder="ابحث عن منتج أو تصنيف"
-          value=""
           style={{ marginTop: 15 }}
+          placeholder="ابحث عن منتج"
+          onFocus={() => onSearchFocus()}
+          onBlur={() => onSearchBlur()}
+          value={searchQueryParam}
+          onChangeText={onSearchValueUpdate}
         />
-        <CategoryFilterSection
-          headerProps={{ text: "التصنيفات" }}
-          data={categoriesList}
-          renderItem={renderCategoryItem}
+      </View>
+
+      {shouldShowSuggestionList && (
+        <SearchSuggestionList
+          isVisible={shouldShowSuggestionList}
+          items={searchSuggestions}
+          hasNextPage={hasNextPage}
+          isLoading={isSearchSuggestionListLoading}
+          fetchNextPage={() => fetchNextPage()}
         />
-        <ProductSection
-          headerProps={{
-            text: "اﻷكثر مبيعا",
-          }}
-          data={mostSellingProducts}
-          renderItem={renderProductItem}
-        />
-        <ProductSection
-          headerProps={{
-            text: "من طلباتي",
-          }}
-          data={userPurchasedProducts}
-          renderItem={renderProductItem}
-        />
+      )}
+
+      <ScrollView scrollEnabled={!shouldShowSuggestionList}>
+        <View style={{ opacity: shouldShowSuggestionList ? 0 : 1 }}>
+          <CategoryFilterSection
+            headerProps={{ text: "التصنيفات" }}
+            data={categoriesList}
+            renderItem={renderCategoryItem}
+          />
+          <ProductSection
+            headerProps={{
+              text: "اﻷكثر مبيعا",
+            }}
+            data={mostSellingProducts}
+            renderItem={renderProductItem}
+          />
+          <ProductSection
+            headerProps={{
+              text: "من طلباتي",
+            }}
+            data={userPurchasedProducts}
+            renderItem={renderProductItem}
+          />
+        </View>
       </ScrollView>
     </View>
+    // </ScrollView>
   );
 };
 

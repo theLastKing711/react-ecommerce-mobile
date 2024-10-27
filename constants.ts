@@ -7,7 +7,8 @@ export const RESOURSES = {
     user: "user",
     category: "categories",
     home: "home",
-    product: "products"
+    product: "products",
+    favourite: "favourite"
 }
 
 export const USER_URI = BASE_URI + "/" + RESOURSES.user;
@@ -16,4 +17,9 @@ export const CATEGORY_URI = USER_URI + "/" + RESOURSES.category;
 
 export const PRODUCT_URI = USER_URI + "/" + RESOURSES.product;
 
+
+export const FAVOURITE_PRODUCTS_URL = PRODUCT_URI + "/" + RESOURSES.favourite;
+
+
 export const HOME_URI = USER_URI + "/" + RESOURSES.home;
+

@@ -22,3 +22,5 @@ export type IHomeProductItem = {
     price: number;
     is_favourite: boolean;
 }
+
+

@@ -7,6 +7,8 @@ import ImageViewer from "@/components/ImageViewer";
 
 const PlaceholderImage = require("../../assets/images/background-image.png");
 
+const PlaceholderImage2 = require("../../assets/images/buffalo-image.jpeg");
+
 export default function Index() {
   const [selectedImage, setSelectedImage] = useState<string | undefined>(
     undefined
@@ -26,7 +28,6 @@ export default function Index() {
       /* @tutinfo After selecting the image, set the app options to true. */
       setShowAppOptions(true);
     } else {
-      alert("You did not select any image.");
     }
   };
 
@@ -34,8 +35,8 @@ export default function Index() {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <ImageViewer
-          imgSource={PlaceholderImage}
-          selectedImage={selectedImage}
+          imgSource={PlaceholderImage2}
+          // selectedImage={selectedImage}
         />
       </View>
       {showAppOptions ? (

@@ -4,11 +4,9 @@
 // to render different styles on the client and server, these aren't directly supported in React Native
 
 import { queryClient } from "@/app/_layout";
-import { CATEGORY_URI, HOME_URI, PRODUCT_URI, USER_URI } from "@/constants";
+import {  PRODUCT_URI } from "@/constants";
 import { apiClient } from "@/libs/axios/config";
-import { CursorPaginatedParentCategorisList } from "@/types/categories";
-import { IHomeCategoryList, IHomeResponse } from "@/types/home";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 
 
@@ -18,13 +16,12 @@ export function useFavouriteProduct() {
     const mutation  = useMutation({
         mutationFn: favouriteProductApi,
         onSuccess: () => {
-            queryClient.invalidateQueries({queryKey: ['home']})
+            queryClient.invalidateQueries({queryKey: ['home', 'favouriteProducts']})
         }
       });
     
     return {
         mutation: mutation.mutate,
-        test: mutation.isSuccess
     }
     
 }

@@ -3,34 +3,34 @@
 // and the first render on the client. Typically, web developers will use CSS media queries
 // to render different styles on the client and server, these aren't directly supported in React Native
 
-import { CATEGORY_URI, HOME_URI, USER_URI } from "@/constants";
+import { CATEGORY_URI } from "@/constants";
 import { apiClient } from "@/libs/axios/config";
 import { CursorPaginatedParentCategorisList } from "@/types/categories";
-import { IHomeCategoryList, IHomeResponse } from "@/types/home";
 import { useQuery } from "@tanstack/react-query";
 
 // but can be achieved using a styling library like Nativewind.
-export function useGetHomeData() {
+export function useGetParentCategories() {
     
-    const info = useQuery({queryKey: ['home'], queryFn: getHomeDataApi})
+    const info = useQuery({queryKey: ['categories'], queryFn: getCategoriesApi})
     
 
 
     return {
-    data: info.data,
+        data: info.data,
         isLoading: info.isLoading,
     }
     
 }
   
-async function getHomeDataApi() {
+async function getCategoriesApi() {
     try {
 
-        const home_url = `${HOME_URI}`;  
+        const parent_categories_url = `${CATEGORY_URI}/parent-list`;  
         
         const response = await apiClient
-                                .get<IHomeResponse>
-                                (home_url);
+                                .get<CursorPaginatedParentCategorisList>
+                                (parent_categories_url);
+
 
         return {
             data: response.data,
