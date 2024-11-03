@@ -14,10 +14,9 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
-          <Stack.Screen name="about" />
-          {/* <Stack.Screen name="product/[id]" /> */}
+          <Stack.Screen name="product/[id]" />
+          <Stack.Screen name="about" options={{ title: "Home" }} />
           <Stack.Screen name="index" />
-          <Stack.Screen name="+not-found" />
         </Stack>
         {/* </CartProvider> */}
       </QueryClientProvider>

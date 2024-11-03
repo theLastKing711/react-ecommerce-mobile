@@ -12,3 +12,11 @@ export type FavouriteProductItem = {
     is_favourite: boolean;
     image_url?: string;
 }
+
+export type ProductDetails = {
+    id: number;
+    name: string;
+    price: number;
+    is_favourite: boolean;
+    image_url?: string;
+}

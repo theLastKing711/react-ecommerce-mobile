@@ -16,7 +16,7 @@ export function useGetFavouriteProducts() {
     const {data, isLoading, hasNextPage, fetchNextPage} = useInfiniteQuery(
         {
             queryKey: ['favouriteProducts'],
-            queryFn :({pageParam}) => getFavouriteProducts({pageParam}),
+            queryFn :({pageParam}) => getFavouriteProductsApi({pageParam}),
             getNextPageParam: (lastPage, pages) => {
                 return lastPage.next_cursor || undefined;
             },
@@ -34,7 +34,7 @@ export function useGetFavouriteProducts() {
     
 }
   
-export async function getFavouriteProducts({pageParam}: InifinteQueryPageParam) {
+export async function getFavouriteProductsApi({pageParam}: InifinteQueryPageParam) {
 
 
     const queryString = pageParam ? `?cursor=${pageParam}&` : '';

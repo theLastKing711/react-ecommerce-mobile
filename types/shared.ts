@@ -11,3 +11,7 @@ export type PaginatedResult<T> = {
 export type InifinteQueryPageParam = {
     pageParam: null | string;
 }
+
+export type IdParam = {
+    id: number
+}
